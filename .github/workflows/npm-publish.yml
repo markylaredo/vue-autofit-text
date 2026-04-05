@@ -50,10 +50,15 @@ jobs:
 
       - name: Check whether version is already published
         id: npm
+        shell: bash
         run: |
-          if npm view "${{ steps.package.outputs.name }}@${{ steps.package.outputs.version }}" version >/dev/null 2>&1; then
+          set -euo pipefail
+          NAME="${{ steps.package.outputs.name }}"
+          VERSION="${{ steps.package.outputs.version }}"
+
+          if npm view "${NAME}@${VERSION}" version --silent >/dev/null 2>&1; then
             echo "already_published=true" >> "$GITHUB_OUTPUT"
-            echo "Version ${{ steps.package.outputs.version }} is already published to npm. Skipping publish."
+            echo "Version ${VERSION} is already published to npm. Skipping publish."
           else
             echo "already_published=false" >> "$GITHUB_OUTPUT"
           fi
