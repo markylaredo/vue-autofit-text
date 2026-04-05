@@ -35,6 +35,7 @@ export interface AutofitTextPlugin {
   install: (appOrVue: VueDirectiveRegistrar, options?: AutofitTextPluginOptions) => void;
 }
 
+export function autoFit(el: HTMLElement, options?: AutofitTextOptions): void;
 export const autofitText: AutofitDirective;
 export function createAutofitTextInstaller(
   directive: AutofitDirective,

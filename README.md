@@ -16,7 +16,27 @@ Compatible with:
 npm install @markylaredo/vue-autofit-text
 ```
 
+This package has a `vue` peer dependency, so your app should already have Vue installed.
+
 ## Quick Start
+
+### What This Package Exports
+
+From `@markylaredo/vue-autofit-text`:
+
+- default export: Vue plugin for global directive registration
+- `autofitText`: directive object for local registration
+- `autoFit`: low-level helper you can call manually
+
+From `@markylaredo/vue-autofit-text/nuxt2`:
+
+- default export: Nuxt 2 plugin
+- `createNuxt2Plugin`: build a Nuxt 2 plugin with custom options
+
+From `@markylaredo/vue-autofit-text/nuxt3`:
+
+- default export: Nuxt 3 plugin
+- `createNuxt3Plugin`: build a Nuxt 3 plugin with custom options
 
 ### Vue 3
 
@@ -69,15 +89,25 @@ export default {
 
 ### Nuxt 3
 
-Register the packaged plugin directly in `nuxt.config.ts`:
+Preferred approach: create a local Nuxt plugin file and register that.
+
+`plugins/autofit-text.ts`
+
+```ts
+import { createNuxt3Plugin } from '@markylaredo/vue-autofit-text/nuxt3'
+
+export default createNuxt3Plugin()
+```
+
+`nuxt.config.ts`
 
 ```ts
 export default defineNuxtConfig({
-  plugins: ['@markylaredo/vue-autofit-text/nuxt3'],
+  plugins: ['~/plugins/autofit-text.ts'],
 })
 ```
 
-Use a local plugin when you want a custom directive name:
+Use a custom directive name like this:
 
 ```ts
 // plugins/autofit-text.ts
@@ -86,25 +116,35 @@ import { createNuxt3Plugin } from '@markylaredo/vue-autofit-text/nuxt3'
 export default createNuxt3Plugin({ name: 'fit-text' })
 ```
 
-Then register the local plugin:
+You can also register the packaged plugin path directly:
 
 ```ts
 export default defineNuxtConfig({
-  plugins: ['~/plugins/autofit-text.ts'],
+  plugins: ['@markylaredo/vue-autofit-text/nuxt3'],
 })
 ```
 
 ### Nuxt 2
 
-Register the packaged plugin in `nuxt.config.js`:
+Preferred approach: create a local Nuxt plugin file and register that.
+
+`plugins/autofit-text.js`
+
+```js
+import { createNuxt2Plugin } from '@markylaredo/vue-autofit-text/nuxt2'
+
+export default createNuxt2Plugin()
+```
+
+`nuxt.config.js`
 
 ```js
 module.exports = {
-  plugins: ['@markylaredo/vue-autofit-text/nuxt2'],
+  plugins: ['~/plugins/autofit-text.js'],
 }
 ```
 
-Use a local plugin when you want a custom directive name:
+Use a custom directive name like this:
 
 ```js
 // plugins/autofit-text.js
@@ -113,12 +153,18 @@ import { createNuxt2Plugin } from '@markylaredo/vue-autofit-text/nuxt2'
 export default createNuxt2Plugin({ name: 'fit-text' })
 ```
 
-Then register the local plugin:
+You can also register the packaged plugin path directly:
 
 ```js
 module.exports = {
-  plugins: ['~/plugins/autofit-text.js'],
+  plugins: ['@markylaredo/vue-autofit-text/nuxt2'],
 }
+```
+
+If Nuxt still holds on to an older generated plugin reference after changing setup, clear the build cache and restart:
+
+```bash
+rm -rf .nuxt node_modules/.cache
 ```
 
 ### Custom directive name
@@ -131,6 +177,12 @@ Vue 2:
 
 ```javascript
 Vue.use(AutofitTextPlugin, { name: 'my-autofit' });
+```
+
+Nuxt 2 or Nuxt 3 local plugin:
+
+```javascript
+export default createNuxt2Plugin({ name: 'my-autofit' })
 ```
 
 ### Template usage
@@ -154,6 +206,26 @@ Vue.use(AutofitTextPlugin, { name: 'my-autofit' });
     v-autofit-text="{ min: 12, max: 48, step: 2 }"
   >
     Customizable font size range
+  </div>
+</template>
+```
+
+#### Target a Child Element
+
+```vue
+<template>
+  <div class="card-title" v-autofit-text="{ target: '.text', max: 32 }">
+    <span class="text">Resize only this child node</span>
+  </div>
+</template>
+```
+
+#### Use the Element Itself as Container
+
+```vue
+<template>
+  <div v-autofit-text="{ container: 'self', min: 14, max: 40 }">
+    Fit against this element's own width
   </div>
 </template>
 ```
@@ -187,6 +259,20 @@ app.use(AutofitTextPlugin);
 
 // Or register directive directly
 app.directive('autofit-text', autofitText);
+```
+
+### Manual Helper Usage
+
+If you want to trigger sizing yourself outside directive hooks, use `autoFit`:
+
+```ts
+import { autoFit } from '@markylaredo/vue-autofit-text'
+
+const element = document.querySelector('.headline') as HTMLElement | null
+
+if (element) {
+  autoFit(element, { min: 12, max: 40, container: 'self' })
+}
 ```
 
 ### Type augmentation for templates (optional)
@@ -248,6 +334,7 @@ The directive starts at `max`, then reduces size by `step` until the text fits t
 
 - The default `max` is `12`. For headings or large labels, set a larger `max` explicitly.
 - The directive resizes width-first. If your layout is height-constrained, tune container styles accordingly.
+- In Nuxt projects, prefer a local plugin file in `plugins/` when you want the most predictable integration.
 
 ## License
 

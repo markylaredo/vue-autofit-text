@@ -1,4 +1,4 @@
-import autofitText from './autofitText.js';
+import autofitText, { autoFit } from './autofitText.js';
 import {
   createAutofitTextInstaller,
   registerAutofitTextDirective,
@@ -8,5 +8,5 @@ const AutofitTextPlugin = {
   install: createAutofitTextInstaller(autofitText),
 };
 
-export { autofitText, createAutofitTextInstaller, registerAutofitTextDirective };
+export { autoFit, autofitText, createAutofitTextInstaller, registerAutofitTextDirective };
 export default AutofitTextPlugin;
