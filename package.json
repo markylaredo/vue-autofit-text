@@ -39,5 +39,13 @@
     "typography",
     "typescript"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markylaredo/vue-autofit-text.git"
+  },
+  "homepage": "https://github.com/markylaredo/vue-autofit-text#readme",
+  "bugs": {
+    "url": "https://github.com/markylaredo/vue-autofit-text/issues"
+  },
   "license": "MIT"
 }
