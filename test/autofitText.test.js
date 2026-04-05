@@ -2,6 +2,13 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 
 import { autoFit } from '../src/autofitText.js'
+import AutofitTextPlugin, {
+  autofitText,
+  createAutofitTextInstaller,
+  registerAutofitTextDirective,
+} from '../src/index.js'
+import { createNuxt2Plugin, resolveNuxt2Registrar } from '../src/nuxt2.js'
+import { createNuxt3Plugin } from '../src/nuxt3.js'
 
 const parsePx = (value) => Number(String(value || '').replace('px', ''))
 
@@ -86,4 +93,90 @@ test('normalizes invalid option ranges and step values', () => {
 
   // min/max are swapped internally, step is clamped to at least 1.
   assert.equal(target.style.fontSize, '30px')
+})
+
+test('registerAutofitTextDirective registers the default directive name', () => {
+  const calls = []
+  const registrar = {
+    directive(name, directive) {
+      calls.push({ name, directive })
+    },
+  }
+
+  const registered = registerAutofitTextDirective(registrar, autofitText)
+
+  assert.equal(registered, true)
+  assert.deepEqual(calls, [{ name: 'autofit-text', directive: autofitText }])
+})
+
+test('createAutofitTextInstaller applies custom directive names', () => {
+  const calls = []
+  const installer = createAutofitTextInstaller(autofitText)
+  const registrar = {
+    directive(name, directive) {
+      calls.push({ name, directive })
+    },
+  }
+
+  const registered = installer(registrar, { name: 'fit-text' })
+
+  assert.equal(registered, true)
+  assert.deepEqual(calls, [{ name: 'fit-text', directive: autofitText }])
+})
+
+test('plugin install uses the shared installer', () => {
+  const calls = []
+  const registrar = {
+    directive(name, directive) {
+      calls.push({ name, directive })
+    },
+  }
+
+  AutofitTextPlugin.install(registrar, { name: 'hero-fit' })
+
+  assert.deepEqual(calls, [{ name: 'hero-fit', directive: autofitText }])
+})
+
+test('resolveNuxt2Registrar uses the root Vue constructor from app context', () => {
+  const registrar = {
+    directive() {},
+  }
+
+  assert.equal(resolveNuxt2Registrar({ app: { constructor: registrar } }), registrar)
+  assert.equal(resolveNuxt2Registrar({}), null)
+})
+
+test('Nuxt 2 plugin registers the directive through app constructor', () => {
+  const calls = []
+  const plugin = createNuxt2Plugin({ name: 'nuxt-fit' })
+  const registrar = {
+    directive(name, directive) {
+      calls.push({ name, directive })
+    },
+  }
+
+  plugin({ app: { constructor: registrar } })
+
+  assert.deepEqual(calls, [{ name: 'nuxt-fit', directive: autofitText }])
+})
+
+test('Nuxt 3 plugin installs the Vue plugin on vueApp', () => {
+  const calls = []
+  const plugin = createNuxt3Plugin({ name: 'nuxt-fit' })
+  const nuxtApp = {
+    vueApp: {
+      use(pluginDefinition, options) {
+        calls.push({ pluginDefinition, options })
+      },
+    },
+  }
+
+  plugin(nuxtApp)
+
+  assert.deepEqual(calls, [
+    {
+      pluginDefinition: AutofitTextPlugin,
+      options: { name: 'nuxt-fit' },
+    },
+  ])
 })

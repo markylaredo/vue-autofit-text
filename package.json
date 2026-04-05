@@ -1,7 +1,7 @@
 {
   "name": "@markylaredo/vue-autofit-text",
   "version": "1.0.0",
-  "description": "Lightweight Vue auto-fit text directive for Vue 2 and Vue 3 with TypeScript support",
+  "description": "Lightweight Vue auto-fit text directive for Vue 2, Vue 3, Nuxt 2, and Nuxt 3 with TypeScript support",
   "type": "module",
   "main": "src/index.js",
   "module": "src/index.js",
@@ -11,6 +11,16 @@
       "types": "./src/index.d.ts",
       "import": "./src/index.js",
       "default": "./src/index.js"
+    },
+    "./nuxt2": {
+      "types": "./src/nuxt2.d.ts",
+      "import": "./src/nuxt2.js",
+      "default": "./src/nuxt2.js"
+    },
+    "./nuxt3": {
+      "types": "./src/nuxt3.d.ts",
+      "import": "./src/nuxt3.js",
+      "default": "./src/nuxt3.js"
     }
   },
   "files": [
@@ -34,13 +44,17 @@
     "vue",
     "vue2",
     "vue3",
+    "nuxt",
+    "nuxt2",
+    "nuxt3",
     "directive",
     "autofit",
     "auto-fit",
     "text-fit",
     "responsive-text",
     "typography",
-    "typescript"
+    "typescript",
+    "plugin"
   ],
   "repository": {
     "type": "git",

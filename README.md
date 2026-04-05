@@ -6,6 +6,8 @@ Compatible with:
 
 - Vue 2
 - Vue 3
+- Nuxt 2
+- Nuxt 3
 - TypeScript projects
 
 ## Installation
@@ -18,7 +20,7 @@ npm install @markylaredo/vue-autofit-text
 
 ### Vue 3
 
-#### Global registration (Vue 2)
+#### Global registration
 
 ```javascript
 import { createApp } from 'vue';
@@ -30,7 +32,7 @@ app.use(AutofitTextPlugin);
 app.mount('#app');
 ```
 
-#### Local directive registration (Vue 2)
+#### Local directive registration
 
 ```javascript
 import { autofitText } from '@markylaredo/vue-autofit-text';
@@ -63,6 +65,60 @@ export default {
     'autofit-text': autofitText,
   },
 };
+```
+
+### Nuxt 3
+
+Register the packaged plugin directly in `nuxt.config.ts`:
+
+```ts
+export default defineNuxtConfig({
+  plugins: ['@markylaredo/vue-autofit-text/nuxt3'],
+})
+```
+
+Use a local plugin when you want a custom directive name:
+
+```ts
+// plugins/autofit-text.ts
+import { createNuxt3Plugin } from '@markylaredo/vue-autofit-text/nuxt3'
+
+export default createNuxt3Plugin({ name: 'fit-text' })
+```
+
+Then register the local plugin:
+
+```ts
+export default defineNuxtConfig({
+  plugins: ['~/plugins/autofit-text.ts'],
+})
+```
+
+### Nuxt 2
+
+Register the packaged plugin in `nuxt.config.js`:
+
+```js
+module.exports = {
+  plugins: ['@markylaredo/vue-autofit-text/nuxt2'],
+}
+```
+
+Use a local plugin when you want a custom directive name:
+
+```js
+// plugins/autofit-text.js
+import { createNuxt2Plugin } from '@markylaredo/vue-autofit-text/nuxt2'
+
+export default createNuxt2Plugin({ name: 'fit-text' })
+```
+
+Then register the local plugin:
+
+```js
+module.exports = {
+  plugins: ['~/plugins/autofit-text.js'],
+}
 ```
 
 ### Custom directive name
@@ -154,7 +210,7 @@ declare module 'vue' {
 - Responsive: recalculates on content and layout changes
 - Configurable: min, max, step, target, container, and line mode
 - Lightweight: zero runtime dependencies
-- Vue 2 and Vue 3 compatible
+- Vue 2, Vue 3, Nuxt 2, and Nuxt 3 compatible
 - TypeScript declarations included
 
 ## How It Works
