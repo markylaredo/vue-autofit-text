@@ -1,6 +1,6 @@
 {
   "name": "@markylaredo/vue-autofit-text",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Lightweight Vue auto-fit text directive for Vue 2, Vue 3, Nuxt 2, and Nuxt 3 with TypeScript support",
   "type": "module",
   "main": "src/index.js",
