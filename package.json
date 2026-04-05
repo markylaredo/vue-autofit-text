@@ -1,5 +1,5 @@
 {
-  "name": "vue-autofit-text",
+  "name": "@markylaredo/vue-autofit-text",
   "version": "1.0.0",
   "description": "Lightweight Vue auto-fit text directive for Vue 2 and Vue 3 with TypeScript support",
   "type": "module",
@@ -26,6 +26,9 @@
   },
   "scripts": {
     "test": "node --test test/**/*.test.js"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "keywords": [
     "vue",

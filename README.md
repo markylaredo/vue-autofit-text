@@ -11,7 +11,7 @@ Compatible with:
 ## Installation
 
 ```bash
-npm install vue-autofit-text
+npm install @markylaredo/vue-autofit-text
 ```
 
 ## Quick Start
@@ -22,7 +22,7 @@ npm install vue-autofit-text
 
 ```javascript
 import { createApp } from 'vue';
-import AutofitTextPlugin from 'vue-autofit-text';
+import AutofitTextPlugin from '@markylaredo/vue-autofit-text';
 import App from './App.vue';
 
 const app = createApp(App);
@@ -33,7 +33,7 @@ app.mount('#app');
 #### Local directive registration (Vue 2)
 
 ```javascript
-import { autofitText } from 'vue-autofit-text';
+import { autofitText } from '@markylaredo/vue-autofit-text';
 
 export default {
   directives: {
@@ -48,7 +48,7 @@ export default {
 
 ```javascript
 import Vue from 'vue';
-import AutofitTextPlugin from 'vue-autofit-text';
+import AutofitTextPlugin from '@markylaredo/vue-autofit-text';
 
 Vue.use(AutofitTextPlugin);
 ```
@@ -56,7 +56,7 @@ Vue.use(AutofitTextPlugin);
 #### Local directive registration
 
 ```javascript
-import { autofitText } from 'vue-autofit-text';
+import { autofitText } from '@markylaredo/vue-autofit-text';
 
 export default {
   directives: {
@@ -118,7 +118,7 @@ Vue.use(AutofitTextPlugin, { name: 'my-autofit' });
 This package ships with declaration files.
 
 ```ts
-import AutofitTextPlugin, { autofitText, type AutofitTextOptions } from 'vue-autofit-text';
+import AutofitTextPlugin, { autofitText, type AutofitTextOptions } from '@markylaredo/vue-autofit-text';
 
 const options: AutofitTextOptions = {
   min: 10,
@@ -139,7 +139,7 @@ If you want stricter type checking for directive values in Vue templates, you ca
 
 ```ts
 // env.d.ts
-import type { AutofitTextOptions } from 'vue-autofit-text';
+import type { AutofitTextOptions } from '@markylaredo/vue-autofit-text';
 
 declare module 'vue' {
   interface ComponentCustomProperties {
