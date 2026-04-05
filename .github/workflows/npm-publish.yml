@@ -16,10 +16,11 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+
     defaults:
       run:
         shell: bash
-        
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -42,25 +43,26 @@ jobs:
       - name: Run tests
         run: pnpm test
 
+      # ✅ FIXED: safe metadata extraction using jq (no quoting issues)
       - name: Read package metadata
         id: package
         run: |
-          echo "name=$(node --print \"JSON.parse(require('node:fs').readFileSync('package.json', 'utf8')).name\")" >> "$GITHUB_OUTPUT"
-          echo "version=$(node --print \"JSON.parse(require('node:fs').readFileSync('package.json', 'utf8')).version\")" >> "$GITHUB_OUTPUT"
+          set -euo pipefail
+          echo "name=$(jq -r .name package.json)" >> $GITHUB_OUTPUT
+          echo "version=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
 
       - name: Check whether version is already published
         id: npm
-        shell: bash
         run: |
           set -euo pipefail
           NAME="${{ steps.package.outputs.name }}"
           VERSION="${{ steps.package.outputs.version }}"
 
           if npm view "${NAME}@${VERSION}" version --silent >/dev/null 2>&1; then
-            echo "already_published=true" >> "$GITHUB_OUTPUT"
+            echo "already_published=true" >> $GITHUB_OUTPUT
             echo "Version ${VERSION} is already published to npm. Skipping publish."
           else
-            echo "already_published=false" >> "$GITHUB_OUTPUT"
+            echo "already_published=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Verify npm authentication
